@@ -52,7 +52,7 @@ const foodTypes = [
   },
   {
     title: "Ripening Chambers",
-    image: "/ripening.jpg",
+    image: "/ripening.png",
     description: "Manages controlled ripening for fruits like bananas, mangoes, and tomatoes with precise temperature, humidity, and gas control.",
     temp: "Recommended Temp: 13°C to 22°C",
     coolingType: "Controls temperature, humidity, and gas levels for safe, uniform ripening.",

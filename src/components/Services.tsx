@@ -51,12 +51,20 @@ const foodTypes = [
     features: ["Rice & wheat", "Lentils & pulses", "Processed grain products"]
   },
   {
-    title: "Ripening chambers &Pharmaceuticals",
+    title: "Ripening Chambers",
+    image: "/ripening.jpg",
+    description: "Manages controlled ripening for fruits like bananas, mangoes, and tomatoes with precise temperature, humidity, and gas control.",
+    temp: "Recommended Temp: 13°C to 22°C",
+    coolingType: "Controls temperature, humidity, and gas levels for safe, uniform ripening.",
+    features: ["Bananas", "Mangoes", "Tomatoes"]
+  },
+  {
+    title: "Pharmaceuticals",
     image: "/pharma.jpg",
-    description: "Manages controlled ripening for produce and provides precise, refrigerated storage for temperature-sensitive pharmaceuticals.",
-    temp: "Ripening: 13°C to 22°C, Pharmaceutical: 2°C to 8°C",
-    coolingType: "Controls temperature, humidity, and gas for ripening; offers stable refrigerated storage for medical-grade products.",
-    features: ["Fruits","Vaccines", "Insulin"," etc.."]
+    description: "Provides precise refrigerated storage for vaccines, insulin, and other temperature-sensitive medical products.",
+    temp: "Recommended Temp: 2°C to 8°C",
+    coolingType: "Stable refrigerated storage ensures product efficacy and safety for pharmaceuticals.",
+    features: ["Vaccines", "Insulin", "Biologics", "Other medicines"]
   }
 ];
 

@@ -1,402 +1,399 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Apple, Fish, Milk, Wheat, Beef, Grape, ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Briefcase, Settings, Wrench, Package, Send, DollarSign, Zap, ArrowRight, Clock, FileText, Layout } from 'lucide-react';
 
-const foodTypes = [
+// --- DATA INTEGRATION (Keeping data from previous step) ---
+
+// 1. Data from original Services component (Input 2) - focuses on process/steps
+const servicesProcess = [
+    { 
+        title: 'Estimation', 
+        description: 'Accurate cost and time estimates for your projects, ensuring transparency and no hidden costs.', 
+        link: 'https://wa.me/9133431786' 
+    },
+    { 
+        title: 'Designing', 
+        description: 'Custom designs tailored to your specific cold chain requirements using advanced 3D modeling and planning tools.', 
+        link: 'https://wa.me/9133431786' 
+    },
+    { 
+        title: 'Supply & Logistics', 
+        description: 'High-quality, certified refrigeration equipment and products delivered directly to your site on time.', 
+        link: 'https://wa.me/9133431786' 
+    },
+    { 
+        title: 'Installation & Setup', 
+        description: 'Professional installation services for seamless setup and integration by our experienced technical team.', 
+        link: 'https://wa.me/9133431786' 
+    },
+    { 
+        title: 'Commissioning', 
+        description: 'Thorough testing and commissioning to ensure optimal thermal performance and energy efficiency.', 
+        link: 'https://wa.me/9133431786' 
+    },
+    { 
+        title: 'After Sales Services', 
+        description: 'Ongoing support, scheduled maintenance, and 24/7 emergency repair services (T&C apply).', 
+        link: 'https://wa.me/9133431786' 
+    },
+];
+
+// 2. Commitment Data (Dummy/Placeholder content based on Screenshot 11.jpg)
+const commitments = [
   {
-    title: "Fruits & Vegetables",
-    image: "/vegies.jpg",
-    description: "Store fresh produce like apples, oranges, potatoes, onions, and leafy vegetables with optimal temperature and humidity control.",
-    temp: "Recommended Temp: 0°C to 4°C (Chilled)",
-    coolingType: "Chilled storage helps maintain freshness and prevent spoilage for fruits and vegetables.",
-    features: ["Apples, Oranges, Grapes", "Onions, Carrots", "Leafy vegetables & herbs"]
+    title: "Precision Engineering",
+    description: "We use state-of-the-art technology to ensure pinpoint accuracy and reliability in every system we design and install.",
+    imageSrc: "/controlpannel.webp",
+    altText: "Precise temperature control panel"
   },
   {
-    title: "Dairy Products",
-    image: "/dairy.jpg",
-    description: "Preserve milk, cheese, butter, yogurt, and other dairy products with precise temperature maintenance.",
-    temp: "Recommended Temp: 1°C to 4°C (Chilled)",
-    coolingType: "Chilled storage ensures dairy products remain fresh and safe for consumption.",
-    features: ["Fresh milk & cream", "Cheese & butter", "Yogurt"]
+    title: "Dedicated Service",
+    description: "Our certified technicians provide 24/7 support and maintenance, ensuring your operations never miss a beat.",
+    imageSrc: "/watercooled.avif",
+    altText: "Technician working on a water-cooled unit"
   },
   {
-    title: "Ice Cream",
-    image: "/icecream.webp",
-    description: "Keep ice cream and frozen desserts at optimal low temperatures for perfect texture and taste.",
-    temp: "Recommended Temp: -18°C to -25°C (Frozen)",
-    coolingType: "Deep freezing preserves the texture and flavor of ice cream and frozen desserts.",
-    features: ["Ice cream tubs & cones", "Frozen desserts", "Deep freeze storage"]
-  },
-  {
-    title: "Seafood & Fish",
-    image: "/seafood.webp",
-    description: "Keep fish, prawns, crabs, and other seafood fresh with specialized freezing and chilling systems.",
-    temp: "Recommended Temp: -18°C to -25°C (Frozen)",
-    coolingType: "Frozen storage prevents spoilage and maintains quality for seafood and fish.",
-    features: ["Fresh fish varieties", "Prawns & crabs", "Frozen seafood products"]
-  },
-  {
-    title: "Meat & Poultry",
-    image: "/meat.webp",
-    description: "Store chicken, mutton, beef, and processed meat products safely with controlled freezing temperatures.",
-    temp: "Recommended Temp: -18°C to -25°C (Frozen)",
-    coolingType: "Frozen storage is essential for long-term preservation and safety of meat and poultry.",
-    features: ["Chicken & poultry", "Mutton & beef", "Processed meat products"]
-  },
-  {
-    title: "Grains & Pulses",
-    image: "/grains.jpg",
-    description: "Preserve rice, wheat, lentils, and other grains in controlled environments to prevent spoilage and pest damage.",
-    temp: "Recommended Temp: 10°C to 15°C (Cool & Dry)",
-    coolingType: "Cool, dry storage prevents mold and insect infestation in grains and pulses.",
-    features: ["Rice & wheat", "Lentils & pulses", "Processed grain products"]
-  },
-  {
-    title: "Ripening Chambers",
-    image: "/ripening.png",
-    description: "Manages controlled ripening for fruits like bananas, mangoes, and tomatoes with precise temperature, humidity, and gas control.",
-    temp: "Recommended Temp: 13°C to 22°C",
-    coolingType: "Controls temperature, humidity, and gas levels for safe, uniform ripening.",
-    features: ["Bananas", "Mangoes", "Tomatoes"]
-  },
-  {
-    title: "Pharmaceuticals",
-    image: "/pharma.jpg",
-    description: "Provides precise refrigerated storage for vaccines, insulin, and other temperature-sensitive medical products.",
-    temp: "Recommended Temp: 2°C to 8°C",
-    coolingType: "Stable refrigerated storage ensures product efficacy and safety for pharmaceuticals.",
-    features: ["Vaccines", "Insulin", "Biologics", "Other medicines"]
+    title: "Sustainable Solutions",
+    description: "We are committed to eco-friendly practices, delivering energy-efficient systems that reduce your carbon footprint.",
+    imageSrc: "/commison.jpg",
+    altText: "Installation process on a building rooftop"
   }
 ];
 
-const services = [
+// 3. Industry Data (Reused from Home Page/Screenshots 12 & 13.jpg)
+// const industries = [
+//     { title: "Food Processing", image: "/foodprocessing.jpg" },
+//     { title: "Pharmaceuticals & Healthcare", image: "/pharma.jpg" },
+//     { title: "Cold Chain Logistics", image: "/truck.jpg" }, // Replaced 'Refinery, Oil & Gas'
+//     { title: "Supermarkets & Retail", image: "/retail.jpg" }, // Added a relevant category
+//     { title: "Restaurents", image: "/vegies.jpg" }, // Replaced 'Data Center Cooling'
+//     { title: "Hospitality & Hotels", image: "/hospitality.jpg" }, // Replaced 'Hospital & Healthcare' for broader fit
+// ];
+
+const industries = [
   {
-    title: 'Estimation',
-    description: 'Accurate cost and time estimates for your projects.',
-    image: '/estimation.jpg', // Calculator/Plans
+    title: "Fruits & Vegetables",
+    image: "/8.jpg",
+   
   },
   {
-    title: 'Designing',
-    description: 'Custom designs tailored to your specific needs.',
-    image: '/design.jpg', // Blueprint/Design
+    title: "Pharmaceuticals",
+    image: "/9.jpg",
+    
+  },
+  
+  {
+    title: "Dairy Products",
+    image: "/10.jpg",
+    
   },
   {
-    title: 'Supply',
-    description: 'High-quality products delivered on time.',
-    image: '/supply.jpg', // Warehouse/Truck
+    title: "Ice Cream",
+    image: "/11.jpg",
+    
   },
   {
-    title: 'Installation',
-    description: 'Professional installation services for seamless setup.',
-    image: '/installation.jpg', // Workers/Install
+    title: "Seafood & Fish",
+    image: "/7.jpg",
+
   },
   {
-    title: 'Commissioning',
-    description: 'Thorough testing and commissioning to ensure optimal performance.',
-    image: '/commison.jpg', // Inspection/Quality
+    title: "Meat & Poultry",
+    image: "/15.jpg",
+   
   },
   {
-    title: 'After Sales Services',
-    description: 'Ongoing support and maintenance (terms & conditions apply).',
-    image: '/sales.png', // Support/Maintenance
+    title: "Grains & Pulses",
+    image: "/13.jpg",
+   
   },
   {
-    title: 'Best Product Performance',
-    description: 'Delivered by our most skilled team.',
-    image: '/performance.png', // Trophy/Badge
-  },
+    title: "Ripening Chambers",
+    image: "/14.jpg",
+   
+  }
 ];
+// --- LAYOUT SECTIONS ---
 
-const Services = () => {
-  const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const [selected, setSelected] = useState<number | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [current, setCurrent] = useState(0);
-  const [prev, setPrev] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
-  const [isSliding, setIsSliding] = useState(false);
-  const intervalRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards(prev => [...prev, index]);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const cards = sectionRef.current?.querySelectorAll('.service-card');
-    cards?.forEach(card => observer.observe(card));
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Auto-slide every 3 seconds, set up interval only once on mount
-  useEffect(() => {
-    intervalRef.current = window.setInterval(() => {
-      handleSlide('right');
-    }, 3000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  // Close modal on Escape key
-  useEffect(() => {
-    if (selected === null) return;
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelected(null);
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [selected]);
-
-  const handleSlide = (direction: 'left' | 'right') => {
-    if (isSliding) return;
-    setIsSliding(true);
-    setSlideDirection(direction);
-    setPrev(current);
-    setCurrent((prevIdx) => {
-      if (direction === 'right') {
-        return (prevIdx + 1) % services.length;
-      } else {
-        return (prevIdx - 1 + services.length) % services.length;
-      }
-    });
-    setTimeout(() => setIsSliding(false), 600); // match transition duration
-  };
-
-  const goTo = (idx: number) => {
-    if (isSliding || idx === current) return;
-    setSlideDirection(idx > current ? 'right' : 'left');
-    setPrev(current);
-    setCurrent(idx);
-    setIsSliding(true);
-    setTimeout(() => setIsSliding(false), 600);
-  };
-
-  return (
-    <section id="services" className="py-20 bg-gray-50 overflow-hidden" ref={sectionRef}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4 animate-fade-in-up">What You Can Store</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-            Our cold storage facilities are designed to preserve a wide variety of food products, 
-            maintaining their freshness, quality, and nutritional value for extended periods.
-          </p>
+// 1. Hero Banner 
+const ServicesHero = () => (
+    <header className="relative min-h-[50vh] flex items-center bg-gradient-to-br from-teal-900 to-teal-700 text-white overflow-hidden">
+        {/* Background Overlay (Darkened Teal) */}
+        <div className="absolute inset-0 opacity-60">
+            {/* Placeholder image for industrial background */}
+            <img 
+                src="/installation.jpg" 
+                alt="Construction workers setting up cold storage" 
+                className="w-full h-full object-cover object-center filter blur-sm"
+                onError={(e) => { e.currentTarget.src = '/imagee.jpg'; }}
+            />
         </div>
+        <div className="absolute inset-0 bg-teal-900/40"></div>
+        
+        {/* Content Area */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 z-10 w-full">
+            {/* Responsive text change: text-4xl on mobile, sm:text-5xl for larger screens */}
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">Our Services</h1>
+            {/* Responsive text change: text-lg on mobile, sm:text-xl for larger screens */}
+            <p className="text-lg sm:text-xl text-teal-100 max-w-3xl">
+                Our services encompass everything from initial design and expert consultation to flawless installation, commissioning, and long-term maintenance, ensuring reliability and safety for all our clients.
+            </p>
+        </div>
+    </header>
+);
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {foodTypes.map((food, index) => (
-            <div 
-              key={index}
-              data-index={index}
-              className={`service-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 p-8 group transform hover:-translate-y-3 hover:rotate-1 cursor-pointer ${
-                visibleCards.includes(index) 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-10'
-              }`}
-              style={{ 
-                transitionDelay: `${index * 100}ms`,
-                background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
-              }}
-              onClick={() => setSelected(index)}
+// 2. Main Service Grid 
+const MainServiceGrid = () => (
+    <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* Responsive text change: text-lg on mobile, sm:text-xl for larger screens */}
+            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto mb-16">
+                Cold Frost customizes products according to client requirements and provides the following services:
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-8">
+                {servicesProcess.map((service, index) => (
+                    <div 
+                        key={index} 
+                        className="p-8 border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-teal-300/50 transition-all duration-300 transform hover:-translate-y-1 group bg-white"
+                    >
+                        {/* Responsive text change: text-2xl on mobile, sm:text-3xl for larger screens */}
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 group-hover:text-teal-700">{service.title}</h3>
+                        <div className="w-12 h-1 bg-teal-500 mx-auto mb-6"></div>
+                        
+                        {/* Responsive text change: text-base on mobile, sm:text-lg for larger screens */}
+                        <p className="text-base sm:text-lg text-gray-600 mb-8 min-h-20">{service.description}</p>
+                        
+                        {/* ENQUIRY Button - text-base on mobile, sm:text-lg */}
+                        <a 
+                            href={service.link}
+                            className="inline-flex items-center justify-center space-x-3 text-base sm:text-lg font-semibold text-white bg-teal-700 px-8 py-3 rounded-md hover:bg-teal-800 transition-all shadow-lg"
+                        >
+                            <span>ENQUIRY</span>
+                            <span className="text-xl leading-none">&gt;</span>
+                        </a>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+);
+
+// 2. Services Section (Screenshot 2.jpg)
+
+
+// --- DATA INTEGRATION (Using your provided servicesProcess data) ---
+interface ServiceProcessItem {
+    title: string;
+    description: string;
+    link: string;
+}
+
+// const servicesProcess: ServiceProcessItem[] = [
+//     { 
+//         title: 'Estimation', 
+//         description: 'Accurate cost and time estimates for your projects, ensuring transparency and no hidden costs.', 
+//         link: '#contact' 
+//     },
+//     { 
+//         title: 'Designing', 
+//         description: 'Custom designs tailored to your specific cold chain requirements using advanced 3D modeling and planning tools.', 
+//         link: '#contact' 
+//     },
+//     { 
+//         title: 'Supply & Logistics', 
+//         description: 'High-quality, certified refrigeration equipment and products delivered directly to your site on time.', 
+//         link: '#contact' 
+//     },
+//     { 
+//         title: 'Installation & Setup', 
+//         description: 'Professional installation services for seamless setup and integration by our experienced technical team.', 
+//         link: '#contact' 
+//     },
+//     { 
+//         title: 'Commissioning', 
+//         description: 'Thorough testing and commissioning to ensure optimal thermal performance and energy efficiency.', 
+//         link: '#contact' 
+//     },
+//     { 
+//         title: 'After Sales Services', 
+//         description: 'Ongoing support, scheduled maintenance, and 24/7 emergency repair services (T&C apply).', 
+//         link: '#contact' 
+//     },
+// ];
+
+// Helper to map services to appropriate icons
+const getIconForStep = (title: string) => {
+    if (title.includes('Estimation')) return FileText;
+    if (title.includes('Designing')) return Layout;
+    if (title.includes('Supply')) return Package;
+    if (title.includes('Installation')) return Wrench;
+    if (title.includes('Commissioning')) return Zap;
+    if (title.includes('Services')) return Clock;
+    return ArrowRight;
+};
+
+// --- REDESIGNED COMPONENT ---
+
+export const ServicesProcessSection: React.FC = () => (
+    <section className="py-20 bg-gray-50"> {/* Changed to gray-50 for subtle contrast */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Our 6-Step Process</h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+                We deliver end-to-end cold chain solutions through a streamlined, transparent workflow.
+            </p>
+            <div className="w-16 h-1 bg-teal-600 mx-auto mb-16"></div>
+            
+            {/* Process Grid: 3 columns, 2 rows for the 6 items */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+                {servicesProcess.map((service, index) => {
+                    const Icon = getIconForStep(service.title);
+                    
+                    // Logic to determine the flow line color/visibility
+                    const isLastStep = index === servicesProcess.length - 1;
+                    const isEndOfRow = (index + 1) % 3 === 0;
+
+                    return (
+                        <div 
+                            key={index} 
+                            className="relative text-left flex flex-col items-start px-4 group"
+                        >
+                            {/* Step Number Circle */}
+                            <div className="absolute top-0 left-0 flex items-center justify-center w-12 h-12 rounded-full bg-teal-600 text-white text-xl font-bold z-10 shadow-lg">
+                                {index + 1}
+                            </div>
+                            
+                            {/* Horizontal Line for Flow (Connects columns on large screens) */}
+                            {/* Hide line on the last step in a row */}
+                            {index < servicesProcess.length - 1 && !isEndOfRow && (
+                                <div className="hidden lg:block absolute h-0.5 bg-teal-200 w-[calc(100%+40px)] top-6 left-12 transform -translate-y-1/2"></div>
+                            )}
+
+                            {/* Card Content */}
+                            <div className="bg-white p-6 pt-16 rounded-xl shadow-xl border-t-4 border-teal-600 w-full flex flex-col flex-grow transform transition-all duration-300 group-hover:shadow-2xl group-hover:scale-[1.02]">
+                                <Icon className="w-8 h-8 text-teal-700 mb-3" />
+                                <h3 className="text-2xl font-semibold text-gray-900 mb-3 group-hover:text-teal-800 transition-colors">
+                                    {service.title}
+                                </h3>
+                                <p className="text-gray-600 text-base mb-6 flex-grow">{service.description}</p>
+                                
+                                <a 
+                                    href={service.link} 
+                                    className="inline-flex items-center space-x-2 text-sm font-semibold text-teal-600 hover:text-teal-700 transition-all mt-auto"
+                                >
+                                    <span>START THIS STEP</span>
+                                    <ArrowRight size={16} />
+                                </a>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    </section>
+);
+
+
+
+const CommitmentSection = () => (
+    <section className="py-20 bg-gray-50">
+        {/* Teal Header Bar */}
+        <div className="w-full bg-gradient-to-r from-teal-800 to-teal-600 shadow-xl py-6 mb-16 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">Our Commitment to Excellence</h2>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* This is the new main grid container.
+              - grid-cols-1: On mobile, everything stacks vertically (Image, Title, Description).
+              - md:grid-cols-3: On medium screens and up, it creates three columns for the layout.
+            */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                {commitments.map((item, index) => (
+                    <div key={index} className="flex flex-col items-center text-center">
+                        
+                        {/* 1. Image Block */}
+                        <div className="w-full h-64 bg-gray-300 rounded-lg overflow-hidden shadow-xl mb-6">
+                            <img 
+                                src={item.imageSrc} 
+                                alt={item.altText} 
+                                className="w-full h-full object-cover object-center transition duration-500 ease-in-out hover:scale-105" 
+                                onError={(e) => { e.currentTarget.src = '/imagee.jpg'; }} 
+                            />
+                        </div>
+
+                        {/* 2. Title */}
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 text-teal-700">
+                            {item.title}
+                        </h3>
+                        
+                        {/* 3. Description */}
+                        <p className="text-base text-gray-600 max-w-sm mx-auto">
+                            {item.description}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+);
+
+// 4. Industry Focus Section (Updated for 2-column split card design)
+const IndustryFocusSection = () => (
+    <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+             {/* Teal Header Bar */}
+            <div className="w-full bg-gradient-to-r from-teal-800 to-teal-600 shadow-xl py-6 mb-12 rounded-lg">
+                {/* Responsive text change: text-2xl on mobile, sm:text-3xl for larger screens */}
+                <h2 className="text-2xl sm:text-3xl font-bold text-white">Industries We Have Worked With</h2>
+            </div>
+            
+            {/* Responsive text change: text-lg on mobile, sm:text-xl for larger screens */}
+            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto mb-16">
+                We provide specialist solutions for controlled temperature environments across diverse sectors, ensuring optimal conditions for perishable and sensitive goods.
+            </p>
+
+            {/* Industry Grid - TWO COLUMNS (Updated per user request) */}
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                {industries.map((industry, index) => (
+                    <div 
+             key={index}
+             data-index={index}
+             className={`service-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 p-8 group transform hover:-translate-y-3 hover:rotate-1 cursor-pointer
+             `}
+             style={{ 
+               transitionDelay: `${index * 100}ms`,
+               background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
+             }}
+             
             >
               <div className="relative h-32 mb-4 flex items-center justify-center">
-                <img src={food.image} alt={food.title} className="absolute inset-0 w-full h-full object-cover object-center rounded-lg" />
+                <img src={industry.image} alt={industry.title} className="absolute inset-0 w-full h-full object-cover object-center rounded-lg" />
                 
               </div>
+              {/* Responsive text change: text-xl on mobile for consistency */}
               <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-teal-700 transition-colors duration-300">
-                {food.title}
+                {industry.title}
               </h3>
-              <div className="text-teal-700 font-medium mb-1">{food.temp}</div>
-              <div className="text-xs text-gray-500 mb-2">{food.coolingType}</div>
-              <p className="text-gray-600 mb-4 leading-relaxed">{food.description}</p>
-              <ul className="space-y-2">
-                {food.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-300">
-                    <div className="w-1.5 h-1.5 bg-teal-600 rounded-full mr-3 group-hover:scale-150 transition-transform duration-300"></div>
-                    {feature}
-                  </li>
+            </div>
                 ))}
-              </ul>
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-teal-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </div>
-          ))}
+            
         </div>
-
-        {/* Additional info section */}
-        <div className="mt-16 bg-gradient-to-br from-teal-50 to-teal-50 rounded-2xl p-8 border border-teal-100 animate-fade-in-up" style={{ animationDelay: '800ms' }}>
-          <div className="text-center">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">Temperature Ranges for Different Foods</h3>
-            <div className="grid md:grid-cols-3 gap-6 mt-8">
-              <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <h4 className="font-semibold text-teal-700 mb-2">Chilled Storage</h4>
-                <p className="text-gray-600 text-sm mb-2">0°C to 4°C</p>
-                <p className="text-gray-500 text-xs">Dairy, vegetables, fruits</p>
-              </div>
-              <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <h4 className="font-semibold text-teal-700 mb-2">Frozen Storage</h4>
-                <p className="text-gray-600 text-sm mb-2">-18°C to -25°C</p>
-                <p className="text-gray-500 text-xs">Meat, seafood, ice cream</p>
-              </div>
-              <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <h4 className="font-semibold text-teal-700 mb-2">Deep Freeze</h4>
-                <p className="text-gray-600 text-sm mb-2">-25°C to -40°C</p>
-                <p className="text-gray-500 text-xs">Long-term storage, exports</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-16 bg-gradient-to-br from-teal-50 to-teal-50 rounded-2xl p-8 border border-teal-100 animate-fade-in-up" style={{ animationDelay: '1000ms' }}>
-          <div className="text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Services</h3>
-            <p className="text-gray-600 mb-4">Cold Frost customizes products according to client requirements and provides the following services:</p>
-            <div className="relative w-full h-[400px] md:h-[500px] min-h-[300px] flex items-center justify-center mb-10 overflow-hidden border-2 border-red-500 md:border-none">
-              {/* Left Arrow */}
-              <button
-                className="carousel-arrow carousel-arrow-left"
-                style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'rgba(255,255,255,0.25)', border: 'none', borderRadius: '50%', boxShadow: '0 4px 24px rgba(0,0,0,0.12)', backdropFilter: 'blur(8px)', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 0.2s' }}
-                onClick={() => handleSlide('left')}
-                aria-label="Previous Service"
-              >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              </button>
-              {/* Right Arrow */}
-              <button
-                className="carousel-arrow carousel-arrow-right"
-                style={{ position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)', zIndex: 30, background: 'rgba(255,255,255,0.25)', border: 'none', borderRadius: '50%', boxShadow: '0 4px 24px rgba(0,0,0,0.12)', backdropFilter: 'blur(8px)', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 0.2s' }}
-                onClick={() => handleSlide('right')}
-                aria-label="Next Service"
-              >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </button>
-              {[prev, current].map((idx, i) => (
-                <div
-                  key={idx + '-' + i + '-' + (i === 0 ? 'prev' : 'current')}
-                  className={`absolute w-full h-full top-0 left-0 transition-transform duration-600 ease-in-out
-                    ${i === 0
-                      ? slideDirection === 'right'
-                        ? '-translate-x-0 animate-slide-out-left'
-                        : 'translate-x-0 animate-slide-out-right'
-                      : isSliding
-                        ? slideDirection === 'right'
-                          ? 'translate-x-full animate-slide-in-right'
-                          : '-translate-x-full animate-slide-in-left'
-                        : 'translate-x-0 z-10'
-                    }
-                  `}
-                  style={{ zIndex: i === 1 ? 20 : 10 }}
-                >
-                  <img
-                    src={services[idx].image}
-                    alt={services[idx].title}
-                    className="w-full h-full object-cover object-center absolute inset-0 border-2 border-blue-500 md:border-none"
-                    draggable={false}
-                    style={{ filter: 'none' }}
-                    onError={e => { e.currentTarget.src = '/imagee.jpg'; }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10" />
-                  <div className="relative z-10 w-full h-full flex flex-col items-center justify-center text-center px-6">
-                    <h3 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                      {services[idx].title}
-                    </h3>
-                    <p className="text-lg md:text-2xl text-white/90 mb-6 max-w-2xl mx-auto">
-                      {services[idx].description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      {selected !== null && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
-          <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl relative" onClick={e => e.stopPropagation()}>
-            <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold" onClick={() => setSelected(null)}>&times;</button>
-            <div className="p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{foodTypes[selected].title}</h2>
-              <img src={foodTypes[selected].image} alt={foodTypes[selected].title} className="w-full h-40 object-cover object-center rounded-lg mb-4" />
-              <p className="text-gray-700 mb-4">{foodTypes[selected].description}</p>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Features</h3>
-                <ul className="list-disc list-inside space-y-1 text-gray-700">
-                  {foodTypes[selected].features.map((f, i) => <li key={i}>{f}</li>)}
-                </ul>
-              </div>
-              <div className="text-teal-700 font-medium mb-1">{foodTypes[selected].temp}</div>
-              <div className="text-xs text-gray-500 mb-2">{foodTypes[selected].coolingType}</div>
-            </div>
-          </div>
-        </div>
-      )}
-      <style>{`
-        @keyframes slide-in-right {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(0); }
-        }
-        @keyframes slide-in-left {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(0); }
-        }
-        @keyframes slide-out-left {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-100%); }
-        }
-        @keyframes slide-out-right {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(100%); }
-        }
-        .animate-slide-in-right {
-          animation: slide-in-right 0.6s forwards;
-        }
-        .animate-slide-in-left {
-          animation: slide-in-left 0.6s forwards;
-        }
-        .animate-slide-out-left {
-          animation: slide-out-left 0.6s forwards;
-        }
-        .animate-slide-out-right {
-          animation: slide-out-right 0.6s forwards;
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.7s;
-        }
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(40px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .carousel-arrow {
-          background: rgba(255,255,255,0.25);
-          border-radius: 50%;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-          backdrop-filter: blur(8px);
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: background 0.2s;
-        }
-        .carousel-arrow:hover {
-          background: rgba(255,255,255,0.45);
-          box-shadow: 0 6px 32px rgba(0,0,0,0.18);
-        }
-        .carousel-arrow svg {
-          stroke: #222;
-        }
-      `}</style>
     </section>
-  );
+);
+
+// Main Component Assembly
+const Services = () => {
+    return (
+        <div id="new-services-page">
+            <ServicesHero />
+            <MainServiceGrid />
+            <ServicesProcessSection />
+            <CommitmentSection />
+            <IndustryFocusSection />
+        </div>
+    );
 };
 
 export default Services;
+
+

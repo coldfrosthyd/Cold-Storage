@@ -31,10 +31,10 @@ const Header = () => {
           </div>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {['Home', 'Services', 'About', 'Equipment', 'Contact'].map((item, index) => (
+            {['Home','About', 'Services', 'Products', 'Blogs', 'Gallery', 'Contact'].map((item, index) => (
               <a 
                 key={item}
-                href={item === 'Equipment' ? '#solutions' : `#${item.toLowerCase()}`} 
+                href={item === 'Equipment' ? '#solutions' : `/${item.toLowerCase()}`} 
                 className="text-gray-700 hover:text-teal-600 font-medium transition-all duration-300 relative group animate-fade-in-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
@@ -43,12 +43,14 @@ const Header = () => {
               </a>
             ))}
           </nav>
-          <div className="hidden md:flex items-center space-x-4 animate-fade-in-up" style={{ animationDelay: '500ms' }}>
+          <div className="hidden md:flex items-center animate-fade-in-up bg-teal-600  rounded-lg hover:bg-teal-700 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg" style={{ animationDelay: '500ms' }}>
+              <img src="/whats-app-image.webp"  width="50" height="40" className='' alt="" />
+
             <a 
-              href="#contact" 
-              className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg"
+              href="https://wa.me/9133431786" 
+              className="  text-white pr-4 py-2"
             >
-              Get Quote
+              <p>Get Quote</p>
             </a>
           </div>
           {/* Mobile menu button */}
@@ -65,10 +67,10 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t animate-slide-down">
             <nav className="flex flex-col space-y-4">
-              {['Home', 'Services', 'About', 'Equipment', 'Contact'].map((item, index) => (
+              {['Home','About', 'Services', 'Products', 'Blogs', 'Gallery', 'Contact'].map((item, index) => (
                 <a 
                   key={item}
-                  href={item === 'Equipment' ? '#solutions' : `#${item.toLowerCase()}`} 
+                  href={item === 'Equipment' ? '#solutions' : `/${item.toLowerCase()}`} 
                   className="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-300 animate-fade-in-up"
                   style={{ animationDelay: `${index * 50}ms` }}
                   onClick={() => setIsMenuOpen(false)}
@@ -76,12 +78,16 @@ const Header = () => {
                   {item}
                 </a>
               ))}
-              <a 
-                href="#contact" 
-                className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 font-medium w-fit transform hover:scale-105"
-              >
-                Get Quote
-              </a>
+              
+             
+            <a 
+              href="https://wa.me/9133431786" 
+              className="w-[50%]  text-white pr-2  flex items-center justify-center animate-fade-in-up bg-teal-600  rounded-lg hover:bg-teal-700 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg"
+            >
+              <img src="/whats-app-image.webp"  width="50" height="40" className='' alt="" />
+              <p>Get Quote</p>
+            </a>
+         
             </nav>
           </div>
         )}

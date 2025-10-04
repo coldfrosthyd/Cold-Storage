@@ -52,27 +52,27 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#home" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `300ms` }}>
+                <a href="/home" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `300ms` }}>
                   Home
                 </a>
               </li>
               <li>
-                <a href="#services" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `350ms` }}>
+                <a href="/services" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `350ms` }}>
                   Services
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `400ms` }}>
+                <a href="/about" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `400ms` }}>
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#solutions" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `450ms` }}>
+                <a href="/products" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `450ms` }}>
                   Equipment
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `500ms` }}>
+                <a href="/contact" className="text-gray-300 hover:text-teal-400 transition-all duration-300 hover:translate-x-1 inline-block animate-fade-in-up" style={{ animationDelay: `500ms` }}>
                   Contact
                 </a>
               </li>

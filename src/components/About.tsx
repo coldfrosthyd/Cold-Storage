@@ -14,7 +14,7 @@ const companyInfo = {
 
 const statsData = [
     { icon: Trophy, title: 'Projects Successfully Delivered', value: 250, suffix: '+' },
-    { icon: Users, title: 'Team of Professionals Working Pan India', value: 10, suffix: '+' },
+    { icon: Users, title: 'Team of Professionals Working Pan India', value: 20, suffix: '+' },
     { icon: Layout, title: 'Strong Vendor Network', value: 30, suffix: '+' },
     { icon: Globe, title: 'Years of Experience and Excellence', value: 18, suffix: '+' },
 ];
@@ -242,7 +242,7 @@ const LeadershipProfile = () => (
                 <div className="relative">
                     <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
                         <img 
-                            src="/leader3.png"
+                            src="/leader0.jpeg"
                             alt={leaderProfile.name}
                             className="w-full h-full object-cover object-top"
                         />

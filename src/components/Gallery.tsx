@@ -46,25 +46,28 @@ const commitments = [
 // Data for the Gallery Section
 const galleryAssets = {
     Machinery: [
-        { title: 'Condensing Units', image: '/watercooled.avif' },
-        { title: 'Evaporator Units', image: '/evaporator.webp' },
-        { title: 'Compressor Racks', image: '/bitzer.png' },
-        { title: 'Bock Compressor', image: '/bock.jpg' },
-        { title: 'Control Panels', image: '/controlpannel.webp' }, 
-    ],
-    Infrastructure: [
-        { title: 'Cold Room Chambers', image: '/coldroom.webp' },
-        { title: 'Ripening Chambers', image: '/reipeningchamber.webp' },
-        { title: 'Insulated Doors', image: '/coldroomdoor.jpg' },
-        { title: 'Glass Door Chillers', image: '/glassdoor.webp' },
-    ],
-    Applications: [
-        { title: "Meat & Seafood Storage", image: "/seafood.webp" },
-        { title: "Pharmaceutical Cold Storage", image: "/pharma.jpg" },
-        { title: "Dairy Products Storage", image: "/dairy.jpg" },
-        { title: "Produce & Veggies", image: "/vegies.jpg" },
-        { title: "Frozen Food Distribution", image: "/icecream.webp" },
-    ],
+  { title: 'Refrigeration System A', image: '(1).jpg' },
+  { title: 'Industrial Chiller B', image: '(2).jpg' },
+  { title: 'HVAC Component C', image: '(3).jpg' },
+  { title: 'Air Handler Unit D', image: '(4).jpg' },
+  { title: 'Cold Storage Equipment E', image: '(5).jpg' },
+  { title: 'Heat Exchanger F', image: '(6).jpg' },
+  { title: 'Ventilation Fan G', image: '(7).jpg' },
+  { title: 'Ductwork Accessory H', image: '(8).jpg' },
+  { title: 'Pump Assembly I', image: '(9).jpg' },
+  { title: 'Motorized Damper J', image: '(10).jpg' },
+  { title: 'Temperature Sensor K', image: '(11).jpg' },
+  { title: 'Pressure Gauge L', image: '(12).jpg' },
+  { title: 'Expansion Valve M', image: '(13).jpg' },
+  { title: 'Filter Drier N', image: '(14).jpg' },
+  { title: 'Oil Separator O', image: '(15).jpg' },
+  { title: 'Defrost Heater P', image: '(16).jpg' },
+  { title: 'Electronic Controller Q', image: '(17).jpg' },
+  { title: 'Insulation Material R', image: '(18).jpg' },
+  { title: 'Safety Switch S', image: '(19).jpg' },
+  { title: 'Power Supply Unit T', image: '(20).jpg' },
+  { title: 'Wiring Harness U', image: '(21).jpg' }
+]
 };
 
 // --- COMPONENTS ---
@@ -89,9 +92,8 @@ const StableGallerySection = ({ title, icon: Icon, assets }: StableGallerySectio
 
     const Header = () => (
         <div className="text-center mb-16">
-            <Icon className="w-10 h-10 text-teal-600 mx-auto mb-2" />
             {/* TEXT RESPONSIVENESS: Scaled from text-3xl up to 4xl */}
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">{title}</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Technology <span className='text-teal-500'>|</span>  Infrastructure <span className='text-teal-500'>|</span> Machinery</h2>
             <div className="w-16 h-1 bg-teal-500 mx-auto mt-4"></div>
         </div>
     );
@@ -108,12 +110,7 @@ const StableGallerySection = ({ title, icon: Icon, assets }: StableGallerySectio
                 onError={(e) => { e.currentTarget.src = 'https://placehold.co/600x400/0f766e/ffffff?text=Image'; }}
             />
             {/* Text Overlay for Context */}
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-teal-800/60 transition-colors duration-500 flex items-end p-4">
-                {/* TEXT RESPONSIVENESS: Scaled from text-lg up to xl */}
-                <p className="text-lg sm:text-xl text-white font-bold border-b-2 border-white/50 group-hover:border-white transition-colors duration-300">
-                    {asset.title}
-                </p>
-            </div>
+           
         </div>
     );
 
@@ -185,19 +182,11 @@ const App = () => {
                 assets={galleryAssets.Machinery}
             />
 
-            <StableGallerySection 
-                title="Cold Storage Infrastructure"
-                icon={Factory}
-                assets={galleryAssets.Infrastructure}
-            />
             
-            <StableGallerySection 
-                title="Core Applications"
-                icon={Thermometer}
-                assets={galleryAssets.Applications}
-            />
+            
+            
 
-            <CommitmentSection />
+            {/* <CommitmentSection /> */}
         </div>
     );
 };

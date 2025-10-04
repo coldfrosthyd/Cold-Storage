@@ -28,7 +28,7 @@ const homePageServices = [
 // Data from original About/Stats section (Input 6)
 const statsData = [
     { icon: Trophy, title: 'Projects Successfully Delivered', value: 250, suffix: '+' },
-    { icon: Users, title: 'Team of Professionals Working Pan India', value: 10, suffix: '+' },
+    { icon: Users, title: 'Team of Professionals Working Pan India', value: 20, suffix: '+' },
     { icon: Layout, title: 'Strong Vendor Network', value: 30, suffix: '+' },
     { icon: Globe, title: 'Years of Experience and Excellence', value: 18, suffix: '+' },
 ];
@@ -409,7 +409,10 @@ const clientLogos: Client[] = [
     { name: "Voltas", src: "/Voltas.avif", industry: "Electricals" },
     { name: "BigBasket", src: "/BigBasket.png", industry: "Agriculture" },
     { name: "Licious", src: "/licious.png", industry: "Dairy Processing" },
-    { name: "Synthesia", src: "/Synthesia_Technology.webp", industry: "Cold Chain Logistics" },
+    { name: "synthite", src: "/synthite.png", industry: "Cold Chain Logistics" },
+    { name: "vijaya", src: "/vijaydairy.png", industry: "Dairy Processing" },
+    { name: "jkseeds", src: "/jkseeds.jpeg", industry: "Dairy Processing" },
+
     
 ];
 

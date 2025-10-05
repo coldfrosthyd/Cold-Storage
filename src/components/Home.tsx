@@ -421,33 +421,33 @@ const clientLogos: Client[] = [
  */
 export const ClientsLogoSection: React.FC = () => (
     <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            
-            {/* Heading */}
-            <h2 className="text-4xl font-bold text-teal-700 mb-12">Our Trusted Clients</h2>
-            
-            {/* Logo Grid (Minimalist design) */}
-            <div className="flex flex-cols-2 sm:flex-cols-4 lg:flex-cols-6 gap-6 items-center justify-center">
-                {clientLogos.map((client, index) => (
-                    <div 
-                        key={index} 
-                        className="p-3 h-20 flex items-center justify-center border-b-2 border-gray-200 transition-all duration-300 hover:border-teal-400 group"
-                    >
-                        <img 
-                            src={client.src} 
-                            alt={client.name} 
-                            className="max-w-full max-h-full object-contain"
-                            // onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => { e.currentTarget.src = '/imagee.png'; }}
-                        />
-                    </div>
-                ))}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                
+                {/* Heading */}
+                <h2 className="text-4xl font-bold text-teal-700 mb-12">Our Trusted Clients</h2>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6 items-center justify-center">
+                    {clientLogos.map((client, index) => (
+                        <div 
+                            key={index} 
+                            className="p-3 h-20 flex items-center justify-center border-b-2 border-gray-200 transition-all duration-300 hover:border-teal-400 group"
+                        >
+                            <img 
+                                src={client.src} 
+                                alt={client.name} 
+                                className="max-w-full max-h-full object-contain"
+                                // Optional: Error handler for broken images
+                                // onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => { e.currentTarget.src = '/imagee.png'; }}
+                            />
+                        </div>
+                    ))}
+                </div>
+                
+                <p className="text-sm text-gray-500 mt-8">
+                    Partnering with leaders across Food, Pharma, and Cold Chain Logistics.
+                </p>
             </div>
-            
-            <p className="text-sm text-gray-500 mt-8">
-                Partnering with leaders across Food, Pharma, and Cold Chain Logistics.
-            </p>
-        </div>
-    </section>
+        </section>
 );
 
 
